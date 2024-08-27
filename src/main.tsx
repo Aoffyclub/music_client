@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Layout from "@/layout/Layout.js"
-import Home from "./pages/home"
+import Home from "./pages/Home"
 import Browse from './pages/Browse'
 import Newsong from './pages/Newsong'
 import Favorite from './pages/Favorite'

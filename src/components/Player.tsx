@@ -44,7 +44,7 @@ const Player = () => {
                     <Pause color="#000" strokeWidth={2} absoluteStrokeWidth />
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#312e2e] border-none p-1">
-                    <p className="text-[10px] font-semibold text-white">
+                    <p className="text-[12px] font-semibold text-white">
                       Pause this song
                     </p>
                   </TooltipContent>
@@ -57,7 +57,7 @@ const Player = () => {
                     <Play color="#000" strokeWidth={2} absoluteStrokeWidth />
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#312e2e] border-none p-1">
-                    <p className="text-[10px] font-semibold text-white">
+                    <p className="text-[12px] font-semibold text-white">
                       Play this song
                     </p>
                   </TooltipContent>

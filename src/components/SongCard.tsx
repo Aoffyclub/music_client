@@ -23,7 +23,7 @@ const SongCard = ({ image, songName, artists }: Song) => {
     toast.success("Playing: " + songName);
   };
   return (
-    <div className="h-auto w-[200px] bg-black p-3 flex flex-col gap-2 rounded-xl hover:bg-[#00000070] shadow-md relative group">
+    <div className="h-auto bg-black p-3 flex flex-col gap-2 rounded-xl hover:bg-[#00000070] shadow-md relative group">
       <div
         onClick={handlePlay}
         className="absolute top-[140px] right-6 p-2 text-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 "
