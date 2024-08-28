@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type props = {
   id: number;
@@ -6,19 +7,23 @@ type props = {
   genre: string;
   des: string;
 };
-const Genre = ({ id, image, genre, des}: props) => {
+const Genre = ({ id, image, genre, des }: props) => {
+  const navigate = useNavigate();
   const getList = (id: number) => {
-    console.log(id);
+    navigate(`/browse/${id}`);
   };
   return (
-    <div className="h-[250px] bg-black flex flex-col items-center justify-center gap-2 rounded-xl hover:bg-[#00000070] shadow-md relative group">
+    <div className="h-[250px] bg-black flex flex-col items-center justify-center gap-2 rounded-xl hover:bg-[#00000070] shadow-md relative group overflow-hidden">
       <img
         src={image}
         alt="genre"
-        className="h-[230px] w-[100%] absolute rounded-xl"
+        className="h-[100%] w-[100%] absolute rounded-xl  group-hover:scale-110 hover:duration-200"
       />
-      <p className="text-white text-xl font-semibold">{genre}</p>
-      <p className="text-[#8E8E8E] text-sm font-semibold">{des}</p>
+
+      <div className="flex flex-col items-center gap-1 z-10">
+        <p className="text-white text-3xl font-bold">{genre}</p>
+        <p className="text-white text-base font-semibold">{des}</p>
+      </div>
 
       <div
         onClick={() => getList(id)}

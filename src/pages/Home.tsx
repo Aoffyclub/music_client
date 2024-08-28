@@ -14,7 +14,7 @@ type SongCard = {
 
 type SongList = {
   id: number;
-  image: string,
+  image: string;
   genre: string;
   des: string
 }

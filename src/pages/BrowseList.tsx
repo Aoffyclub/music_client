@@ -1,0 +1,63 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { Category } from "@/interface/Interface";
+
+const BrowseList = () => {
+  const { id } = useParams();
+
+  const [genres, setGenres] = useState<Category>();
+  useEffect(() => {
+    getGenres(id);
+  }, [id]);
+
+  const getGenres = async (id: string | undefined) => {
+   
+    try {
+         await axios.request({
+           url: `${import.meta.env.VITE_BASE_API}/api/genre/${id}`,
+           method: "GET",
+         }).then((res) => {
+            setGenres(res.data.data)
+        
+            
+         })
+
+    } catch (error) {
+      toast.error("Failed to get genres");
+      console.log(error);
+      
+    }
+  };
+  return (
+    <div className="flex flex-col bg-[#000] p-3 h-[100%] w-[calc(100vw-250px)] text-white overflow-scroll no-scrollbar">
+      <div className="flex flex-col relative gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] h-[1000px] w-[100%] rounded-xl overflow-hidden">
+        <div
+          className="w-[100%] h-[270px] absolute top-0"
+          style={{
+            background: `linear-gradient(to bottom, ${genres?.bgColor}, #07070705)`,
+          }}
+        ></div>
+
+        <div className="flex flex-col gap-2 z-10 py-4">
+          <div className="flex gap-5 items-end py-6 px-6 border-b-2 border-[#1d1c1c]">
+            <img
+              src={genres?.image}
+              alt=""
+              className="w-[150px] h-[170px] rounded-lg shadow-2xl"
+            />
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold text-3xl">{genres?.genre}</h1>
+              <p className="font-semibold text-lg text-teal-400">
+                {genres?.des}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BrowseList;
