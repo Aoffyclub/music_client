@@ -17,10 +17,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { PlayerContext } from "@/Provider/PlayConext";
 
 const Player = () => {
   const [play, setPlay] = useState<boolean>(false);
+  const { SetSelectSong, selectSong } = useContext(PlayerContext);
+
+  useEffect(() => {
+    console.log(selectSong);
+
+  },[])
   return (
     <div className="flex justify-between h-[80px] w-full bg-black px-10 text-white ">
       <div className="flex gap-3 items-center w-[200px]">
@@ -73,6 +80,7 @@ const Player = () => {
           <Progress value={60} className="w-[450px] h-[7px]" />
           <p>3:55</p>
         </div>
+        <audio></audio>
       </div>
       <div className="flex items-center gap-2 w-[200px]">
         <Volume2 />

@@ -9,6 +9,7 @@ import Browse from "./pages/Browse";
 import Newsong from "./pages/Newsong";
 import Favorite from "./pages/Favorite";
 import BrowseList from "./pages/BrowseList";
+import { PlayerProvider } from "./Provider/PlayConext";
 
 const router = createBrowserRouter([
   {
@@ -40,5 +41,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
+  <PlayerProvider>
+    <RouterProvider router={router} />
+  </PlayerProvider>
+ 
 );

@@ -63,6 +63,7 @@ const Newsong = () => {
               image={data.image}
               songName={data.songName}
               artists={data.artist}
+              audio={data.audio}
             />
           ))}
         </div>
