@@ -26,7 +26,7 @@ const SongCard = ({ image, songName, artists }: Song) => {
     <div className="h-auto bg-black p-3 flex flex-col gap-2 rounded-xl hover:bg-[#00000070] shadow-md relative group">
       <div
         onClick={handlePlay}
-        className="absolute top-[140px] right-6 p-2 text-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 "
+        className="absolute top-[140px] right-6 h-[40px] w-[40px] flex items-center justify-center text-sm rounded-full bg-[#2B2A2A] opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 "
       >
         {play ? (
           <TooltipProvider>
@@ -34,7 +34,7 @@ const SongCard = ({ image, songName, artists }: Song) => {
               <TooltipTrigger>
                 <Pause />
               </TooltipTrigger>
-              <TooltipContent className="bg-[#312e2e] border-none p-1">
+              <TooltipContent className="bg-[#242121] border-none">
                 <p className="text-[10px] font-semibold text-white">
                   Pause this song
                 </p>
@@ -47,7 +47,7 @@ const SongCard = ({ image, songName, artists }: Song) => {
               <TooltipTrigger>
                 <Play />
               </TooltipTrigger>
-              <TooltipContent className="bg-[#312e2e] border-none p-1">
+              <TooltipContent className="bg-[#242121] border-none">
                 <p className="text-[10px] font-semibold text-white">
                   Play this song
                 </p>

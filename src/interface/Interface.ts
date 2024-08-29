@@ -7,3 +7,16 @@ export interface Category {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Song {
+  songId: number;
+  image: string,
+  songName: string,
+  artist: string,
+  audio: string,
+  duration: string,
+  genreId: number,
+  createdAt: string;
+  updatedAt: string;
+
+}

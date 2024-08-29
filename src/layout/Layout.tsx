@@ -9,7 +9,18 @@ const Layout = () => {
       <div className="flex h-[calc(100vh-80px)]">
         <NavBar />
         <Outlet />
-        <Toaster position="bottom-right" />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              backgroundColor: "#2A2929",
+              color: "#fff",
+              borderRadius: "8px",
+              padding: "10px",
+              fontWeight: "bold",
+            },
+          }}
+        />
       </div>
 
       <Player />

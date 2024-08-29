@@ -27,7 +27,7 @@ const Genre = ({ id, image, genre, des }: props) => {
 
       <div
         onClick={() => getList(id)}
-        className="absolute bottom-4 right-20 p-2 bg-[#5f5b5b] text-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
+        className="cursor-pointer absolute bottom-4 right-20 p-2 bg-[#5f5b5b] text-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
       >
         <ChevronRight strokeWidth={5} />
       </div>
