@@ -1,6 +1,7 @@
 import { Play, Pause } from "lucide-react";
-import { useState, useRef } from "react";
-import { toast } from "react-hot-toast";
+import { useContext } from "react";
+import { PlayerContext } from "@/Provider/PlayConext";
+import { Song } from "@/interface/Interface";
 
 import {
   Tooltip,
@@ -9,34 +10,33 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface Song {
-  image: string;
-  songName: string;
-  artists: string;
-  audio: string;
+// กำหนดประเภทของพร็อพที่ SongCard จะรับ
+interface SongCardProps {
+  data: Song;
 }
 
-const SongCard = ({ image, songName, artists, audio }: Song) => {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+const SongCard = ({ data }:SongCardProps) => {
+  const playerContext = useContext(PlayerContext);
+
+  if (!playerContext) {
+    throw new Error("SongCard must be used within a PlayerProvider");
+  }
+
+  const { setSongToPlay, playPauseClick, isPlaying } = playerContext;
 
   const handlePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        toast.error("Paused: " + songName);
-      } else {
-        audioRef.current.play();
-        toast.success("Playing: " + songName);
-      }
-      setIsPlaying((prev) => !prev);
-    }
+    setSongToPlay(data);
+    setTimeout(() => {
+      playPauseClick();
+    }, 300);
   };
+
   return (
     <div className="h-auto bg-black p-3 flex flex-col gap-2 rounded-xl hover:bg-[#00000070] shadow-md relative group">
       <div
+        key={data.songId}
         onClick={handlePlayPause}
-        className="absolute top-[140px] right-6 h-[40px] w-[40px] flex items-center justify-center text-sm rounded-full bg-[#2B2A2A] opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 "
+        className="absolute top-[140px] right-6 h-[40px] w-[40px] flex items-center justify-center text-sm rounded-full bg-[#2B2A2A] opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
       >
         {isPlaying ? (
           <TooltipProvider>
@@ -66,10 +66,9 @@ const SongCard = ({ image, songName, artists, audio }: Song) => {
           </TooltipProvider>
         )}
       </div>
-      <img src={image} alt="" className="rounded-md h-[180px] w-[100%]" />
-      <p className="font-semibold">{songName}</p>
-      <p className="text-sm hover:underline text-[#8E8E8E]">{artists}</p>
-      <audio ref={audioRef} src={audio} />
+      <img src={data?.image} alt="" className="rounded-md h-[180px] w-[100%]" />
+      <p className="font-semibold">{data?.songName}</p>
+      <p className="text-sm hover:underline text-[#8E8E8E]">{data?.artist}</p>
     </div>
   );
 };

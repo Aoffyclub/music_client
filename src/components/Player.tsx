@@ -17,34 +17,39 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { useState, useContext, useEffect } from "react";
+import {  useContext, useEffect } from "react";
 import { PlayerContext } from "@/Provider/PlayConext";
 
 const Player = () => {
-  const [play, setPlay] = useState<boolean>(false);
-  const { SetSelectSong, selectSong } = useContext(PlayerContext);
+  const playerContext = useContext(PlayerContext);
+  const { selectedSong, audioRef, isPlaying, playPauseClick } = playerContext;
 
   useEffect(() => {
-    console.log(selectSong);
+    console.log(selectedSong);
+  }, [selectedSong]);
 
-  },[])
+  const handlePlayPause = () => {
+    playPauseClick();
+  };
+
   return (
-    <div className="flex justify-between h-[80px] w-full bg-black px-10 text-white ">
+    <div className="flex justify-between h-[80px] w-full bg-black px-10 text-white">
       <div className="flex gap-3 items-center w-[200px]">
-        <img src="" alt="" className="h-[50px] w-[50px]" />
+        <img src={selectedSong?.image} alt="" className="h-[50px] w-[50px]" />
         <div>
-          <h2 className="font-semibold">Song Title</h2>
-          <p className="text-[12px]">Artist - Album</p>
+          <h2 className="font-semibold">{selectedSong?.songName}</h2>
+          <p className="text-[12px]">{selectedSong?.artist}</p>
         </div>
       </div>
       <div className="flex flex-col justify-center">
         <div className="flex gap-2 items-center justify-center">
           <SkipBack />
           <div
-            onClick={() => setPlay((prev) => !prev)}
+            key={selectedSong?.songId}
+            onClick={handlePlayPause}
             className="h-[35px] w-[35px] bg-white rounded-full flex items-center justify-center"
           >
-            {play ? (
+            {isPlaying ? (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
@@ -72,15 +77,13 @@ const Player = () => {
               </TooltipProvider>
             )}
           </div>
-
           <SkipForward />
         </div>
         <div className="flex gap-4 items-center">
           <p>0:00</p>
           <Progress value={60} className="w-[450px] h-[7px]" />
-          <p>3:55</p>
+          <p>{selectedSong?.duration}</p>
         </div>
-        <audio></audio>
       </div>
       <div className="flex items-center gap-2 w-[200px]">
         <Volume2 />
@@ -92,6 +95,7 @@ const Player = () => {
         />
         <Maximize2 size={18} className="ml-2" />
       </div>
+      <audio ref={audioRef} src={selectedSong?.audio} />
     </div>
   );
 };

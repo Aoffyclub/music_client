@@ -59,11 +59,7 @@ const Newsong = () => {
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 ">
           {allSong?.map((data) => (
             <SongCard
-              key={data.songId}
-              image={data.image}
-              songName={data.songName}
-              artists={data.artist}
-              audio={data.audio}
+              data={data}
             />
           ))}
         </div>
