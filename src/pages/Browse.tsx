@@ -2,17 +2,9 @@ import Genre from "@/components/Genre";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Category } from "@/interface/Interface";
 
 
-interface category {
-  genreId: number;
-  image: string;
-  genre: string;
-  des: string;
-  bgColor: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const Browse = () => {
   // const musicalGenres: category[] = [
@@ -37,7 +29,7 @@ const Browse = () => {
   //   { id: 20, genre: "New Wave", des: "New Wave song" },
   // ];
 
-  const [genres, setGenres] = useState<category[]>([]);
+  const [genres, setGenres] = useState<Category[]>([]);
 
 
   useEffect(() => {
