@@ -17,16 +17,20 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import {  useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { PlayerContext } from "@/Provider/PlayConext";
 
 const Player = () => {
   const playerContext = useContext(PlayerContext);
-  const { selectedSong, audioRef, isPlaying, playPauseClick } = playerContext;
+
+  if (!playerContext) {
+    throw new Error("SongCard must be used within a PlayerProvider");
+  }
+  const { selectedSong, audioRef, currentTime, isPlaying, playPauseClick, endTime, seekbar } = playerContext;
 
   useEffect(() => {
-    console.log(selectedSong);
-  }, [selectedSong]);
+    console.log(seekbar);
+  }, [seekbar]);
 
   const handlePlayPause = () => {
     playPauseClick();
@@ -80,9 +84,13 @@ const Player = () => {
           <SkipForward />
         </div>
         <div className="flex gap-4 items-center">
-          <p>0:00</p>
-          <Progress value={60} className="w-[450px] h-[7px]" />
-          <p>{selectedSong?.duration}</p>
+          <p>
+            {currentTime?.minute}:{currentTime?.second}
+          </p>
+          <Progress value={seekbar} className="w-[450px] h-[7px]" />
+          <p>
+            {endTime?.minute}:{endTime?.second}
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-2 w-[200px]">
