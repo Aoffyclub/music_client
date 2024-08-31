@@ -20,13 +20,19 @@ interface Time {
 // Define the PlayContext interface
 interface PlayContextType {
   selectedSong: Song | null;
+  allSongs: Song ;
+  volume : number ;
   isPlaying: boolean;
   currentTime: Time;
   endTime: Time;
   seekbar: number;
   audioRef: React.RefObject<HTMLAudioElement>;
-  playPauseClick: () => void;
-  setSongToPlay: (song: Song) => void;
+  playClick: () => void;
+  puaseClick: () => void;
+  setSongToPlay: (song: number) => void;
+  nextSong: () => void;
+  prevSong: () => void;
+  collectAllSongs: (songs: Song[]) => void;
 }
 
 // Create the PlayerContext with a default value of null
@@ -36,6 +42,7 @@ const PlayerContext = createContext<PlayContextType | null>(null);
 const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [allSongs, setAllSongs] = useState<Song[] | null>([]);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [seekbar, setSeekbar] = useState<number>(0);
@@ -52,23 +59,50 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Function to set the current song
-  const setSongToPlay = (song: Song) => {
-    setSelectedSong(song);
-    console.log(song);
+  const setSongToPlay = (song: number) => {
+
+    const selectSong = allSongs?.find((s) => s.songId === song) || null;
+    setSelectedSong(selectSong);
+
+    setTimeout(() => {
+      playClick();
+    }, 300);
   };
 
-  // Function to handle play/pause functionality
-  const playPauseClick = () => {
-    setIsPlaying((prev) => !prev);
-    if (audioRef?.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-    }
-    console.log(endTime);
+  const collectAllSongs = (songs: Song[]) => {
+    setAllSongs(songs);
+    console.log(songs);
+    
   };
+
+  const playClick = () => {
+    if (audioRef?.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+  const puaseClick = () => {
+    if (audioRef?.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+const nextSong = () => {
+  if (!allSongs) return;
+
+  const currentIndex = allSongs.findIndex((s) => s.songId === selectedSong?.songId) || 0;
+  const nextIndex = (currentIndex + 1) % allSongs.length;
+  setSongToPlay(allSongs[nextIndex].songId);
+};
+
+const prevSong = () => {
+  if (!allSongs) return;
+  const currentIndex = allSongs.findIndex((s) => s.songId === selectedSong?.songId) || 0;
+  const prevIndex = (currentIndex - 1 + allSongs.length) % allSongs.length;
+  setSongToPlay(allSongs[prevIndex].songId);
+};
+
 
   useEffect(() => {
     const audioElement = audioRef?.current;
@@ -111,8 +145,14 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         currentTime,
         endTime,
         seekbar,
-        playPauseClick,
+        playClick,
+        puaseClick,
         setSongToPlay,
+        collectAllSongs,
+        nextSong,
+        prevSong,
+        allSongs,
+       
       }}
     >
       {children}

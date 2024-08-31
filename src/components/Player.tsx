@@ -17,7 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { PlayerContext } from "@/Provider/PlayConext";
 
 const Player = () => {
@@ -26,20 +26,36 @@ const Player = () => {
   if (!playerContext) {
     throw new Error("SongCard must be used within a PlayerProvider");
   }
-  const { selectedSong, audioRef, currentTime, isPlaying, playPauseClick, endTime, seekbar } = playerContext;
+  const {
+    selectedSong,
+    playClick,
+    puaseClick,
+    audioRef,
+    currentTime,
+    isPlaying,
+    endTime,
+    seekbar,
+    nextSong,
+    prevSong,
+  } = playerContext;
 
-  useEffect(() => {
-    console.log(seekbar);
-  }, [seekbar]);
 
-  const handlePlayPause = () => {
-    playPauseClick();
+
+  const changeValume = (value : number[]) => {
+     if (audioRef?.current) {
+       audioRef.current.volume = value[0] /100;
+     }
+    
   };
 
   return (
     <div className="flex justify-between h-[80px] w-full bg-black px-10 text-white">
       <div className="flex gap-3 items-center w-[200px]">
-        <img src={selectedSong?.image} alt="" className="h-[50px] w-[50px]" />
+        <img
+          src={selectedSong?.image}
+          alt=""
+          className="h-[50px] w-[50px] rounded-md bg-[#1B1A1A]"
+        />
         <div>
           <h2 className="font-semibold">{selectedSong?.songName}</h2>
           <p className="text-[12px]">{selectedSong?.artist}</p>
@@ -47,17 +63,22 @@ const Player = () => {
       </div>
       <div className="flex flex-col justify-center">
         <div className="flex gap-2 items-center justify-center">
-          <SkipBack />
+          <SkipBack onClick={() => prevSong()} />
           <div
             key={selectedSong?.songId}
-            onClick={handlePlayPause}
+            // onClick={handlePlayPause}
             className="h-[35px] w-[35px] bg-white rounded-full flex items-center justify-center"
           >
             {isPlaying ? (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Pause color="#000" strokeWidth={2} absoluteStrokeWidth />
+                    <Pause
+                      onClick={() => puaseClick()}
+                      color="#000"
+                      strokeWidth={2}
+                      absoluteStrokeWidth
+                    />
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#312e2e] border-none p-1">
                     <p className="text-[12px] font-semibold text-white">
@@ -70,7 +91,12 @@ const Player = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Play color="#000" strokeWidth={2} absoluteStrokeWidth />
+                    <Play
+                      onClick={() => playClick()}
+                      color="#000"
+                      strokeWidth={2}
+                      absoluteStrokeWidth
+                    />
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#312e2e] border-none p-1">
                     <p className="text-[12px] font-semibold text-white">
@@ -81,7 +107,7 @@ const Player = () => {
               </TooltipProvider>
             )}
           </div>
-          <SkipForward />
+          <SkipForward onClick={() => nextSong()} />
         </div>
         <div className="flex gap-4 items-center">
           <p>
@@ -89,14 +115,21 @@ const Player = () => {
           </p>
           <Progress value={seekbar} className="w-[450px] h-[7px]" />
           <p>
-            {endTime?.minute}:{endTime?.second}
+            {isNaN(endTime.minute)
+              ? "00"
+              : String(endTime.minute).padStart(2, "0")}
+            :
+            {isNaN(endTime.second)
+              ? "00"
+              : String(endTime.second).padStart(2, "0")}
           </p>
         </div>
       </div>
       <div className="flex items-center gap-2 w-[200px]">
         <Volume2 />
         <Slider
-          defaultValue={[33]}
+          onValueChange={changeValume}
+          defaultValue={[100]}
           max={100}
           step={1}
           className="w-[150px] h-[7px]"

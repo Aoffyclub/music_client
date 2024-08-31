@@ -3,50 +3,48 @@ import Genre from "@/components/Genre";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { PlayerContext } from "@/Provider/PlayConext";
 
-type SongCard = {
-  id: number;
-  image: string;
-  songName: string;
-  artists: string;
-};
+import { Song } from "@/interface/Interface";
+import toast from "react-hot-toast";
 
 type SongList = {
   id: number;
   image: string;
   genre: string;
-  des: string
-}
+  des: string;
+};
 
 const Home = () => {
+  const [newSong, setNewSong] = useState<Song[]>([]);
   const [sliders, setSliders] = useState<number>(1);
-  const newSongs: SongCard[] = [
-    { id: 1, image: "image1.jpg", songName: "Song One", artists: "Artist A" },
-    { id: 2, image: "image2.jpg", songName: "Song Two", artists: "Artist B" },
-    { id: 3, image: "image3.jpg", songName: "Song Three", artists: "Artist C" },
-    { id: 4, image: "image4.jpg", songName: "Song Four", artists: "Artist D" },
-    { id: 5, image: "image5.jpg", songName: "Song Five", artists: "Artist E" },
-    { id: 6, image: "image6.jpg", songName: "Song Six", artists: "Artist F" },
-  ];
-  const trendSongs: SongCard[] = [
-    { id: 7, image: "image7.jpg", songName: "Song Seven", artists: "Artist G" },
-    { id: 8, image: "image8.jpg", songName: "Song Eight", artists: "Artist H" },
-    { id: 9, image: "image9.jpg", songName: "Song Nine", artists: "Artist I" },
-    { id: 10, image: "image10.jpg", songName: "Song Ten", artists: "Artist J" },
-    {
-      id: 11,
-      image: "image11.jpg",
-      songName: "Song Eleven",
-      artists: "Artist K",
-    },
-    {
-      id: 12,
-      image: "image12.jpg",
-      songName: "Song Twelve",
-      artists: "Artist L",
-    },
-  ];
+   const playerContext = useContext(PlayerContext);
+   if (!playerContext) {
+     throw new Error("Newsong must be used within a PlayerProvider");
+   }
+   const { allSongs, collectAllSongs } = playerContext;
+
+  useEffect(() => {
+    getNewSong();
+  }, []);
+
+  const getNewSong = async () => {
+    try {
+      axios
+        .request({
+          url: import.meta.env.VITE_BASE_API + "/api/songnew",
+          method: "GET",
+        })
+        .then((res) => {
+          setNewSong(res.data.data)
+          collectAllSongs(res.data.data);
+        });
+    } catch (err) {
+      toast.error("Failed to get genre list" + err.message);
+    }
+  };
 
   const playList: SongList[] = [
     {
@@ -138,20 +136,15 @@ const Home = () => {
             modules={[Pagination]}
             className="mySwiper"
           >
-            {newSongs.map((data) => (
+            {newSong.map((data: Song) => (
               <SwiperSlide>
-                <SongCard
-                  key={data.id}
-                  image={data.image}
-                  songName={data.songName}
-                  artists={data.artists}
-                />
+                <SongCard  data={data} />
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
 
-        <p className="text-xl font-bold">Trending songs </p>
+        {/* <p className="text-xl font-bold">Trending songs </p>
         <div>
           <Swiper
             slidesPerView={sliders}
@@ -173,7 +166,7 @@ const Home = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-        </div>
+        </div> */}
 
         <p className="text-xl font-bold">Listing songs </p>
         <div>
