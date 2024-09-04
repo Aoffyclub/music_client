@@ -1,5 +1,6 @@
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
+import Headset from "../images/headset.png"
 
 import {
   SkipForward,
@@ -49,10 +50,10 @@ const Player = () => {
   };
 
   return (
-    <div className="flex justify-between h-[80px] w-full bg-black px-10 text-white">
-      <div className="flex gap-3 items-center w-[200px]">
+    <div className="flex justify-between h-[80px] w-full bg-black md:px-10 px-4 text-white">
+      <div className="flex gap-3 items-center md:w-[200px] w-auto">
         <img
-          src={selectedSong?.image}
+          src={selectedSong?.image || Headset}
           alt=""
           className="h-[50px] w-[50px] rounded-md bg-[#1B1A1A]"
         />
@@ -109,11 +110,14 @@ const Player = () => {
           </div>
           <SkipForward onClick={() => nextSong()} />
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="sm:flex hidden gap-4 items-center">
           <p>
             {currentTime?.minute}:{currentTime?.second}
           </p>
-          <Progress value={seekbar} className="w-[450px] h-[7px]" />
+          <Progress
+            value={seekbar}
+            className="w-[150px] sm:w-[200px] md:w-[250px] lg:w-[400px]  h-[7px]"
+          />
           <p>
             {isNaN(endTime.minute)
               ? "00"
@@ -125,7 +129,7 @@ const Player = () => {
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-2 w-[200px]">
+      <div className="sm:flex hidden items-center gap-2 md:w-[200px] w-[100px]">
         <Volume2 />
         <Slider
           onValueChange={changeValume}

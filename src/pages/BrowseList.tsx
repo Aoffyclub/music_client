@@ -68,20 +68,20 @@ const BrowseList = () => {
     playClick();
   };
   return (
-    <div className="flex flex-col bg-[#000] p-3 h-[100%] w-[calc(100vw-250px)] text-white overflow-scroll no-scrollbar">
+    <div className="flex flex-col bg-[#000] p-3 h-[100%] md:w-[calc(100vw-250px)] w-full text-white overflow-scroll no-scrollbar">
       <div className="flex flex-col relative gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] h-[1000px] w-[100%] rounded-xl overflow-hidden">
         <div
-          className="w-[100%] h-[270px] absolute top-0"
+          className="w-[100%] sm:h-[270px] h-[180px] absolute top-0"
           style={{
             background: `linear-gradient(to bottom, ${genres?.bgColor}, #07070705)`,
           }}
         ></div>
-        <div className="flex flex-col gap-2 z-10 py-4">
-          <div className="flex gap-5 items-end py-6 px-6 border-b-2 border-[#1d1c1c]">
+        <div className="flex flex-col gap-2 z-10 sm:py-4 py-2">
+          <div className="flex gap-5 items-end sm:py-6 py-4 px-6 border-b-[1px] border-[#1d1c1c]">
             <img
               src={genres?.image}
               alt=""
-              className="w-[150px] h-[170px] rounded-lg shadow-2xl"
+              className="sm:w-[150px] sm:h-[170px] w-[90px] h-[90px] rounded-lg shadow-2xl"
             />
             <div className="flex flex-col gap-1">
               <h1 className="font-bold text-3xl">{genres?.genre}</h1>
@@ -127,7 +127,9 @@ const BrowseList = () => {
             </TableBody>
           </Table>
         ) : (
-          <div className="w-[100%] mt-3 flex items-center justify-center text-[#726c6c] font-semibold text-lg">No song available</div>
+          <div className="w-[100%] mt-3 flex items-center justify-center text-[#726c6c] font-semibold text-lg">
+            No song available
+          </div>
         )}
       </div>
     </div>

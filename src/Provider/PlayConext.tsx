@@ -1,18 +1,8 @@
 import React, { useState, createContext, useRef, useEffect } from "react";
+import { Song } from "@/interface/Interface";
 
 // Define the Song interface
-interface Song {
-  length: number;
-  songId: number;
-  image: string;
-  songName: string;
-  artist: string;
-  audio: string;
-  duration: string;
-  genreId: number;
-  createdAt: string;
-  updatedAt: string;
-}
+
 interface Time {
   second: number;
   minute: number;
@@ -21,7 +11,7 @@ interface Time {
 // Define the PlayContext interface
 interface PlayContextType {
   selectedSong: Song | null;
-  allSongs: Song[] ;
+  allSongs: Song[];
   isPlaying: boolean;
   currentTime: Time;
   endTime: Time;
@@ -33,6 +23,8 @@ interface PlayContextType {
   nextSong: () => void;
   prevSong: () => void;
   collectAllSongs: (songs: Song[]) => void;
+  collectAllSongsHome: (songs: Song[]) => void;
+  clearAllSongs: () => void;
 }
 
 // Create the PlayerContext with a default value of null
@@ -60,7 +52,6 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Function to set the current song
   const setSongToPlay = (song: number) => {
-
     const selectSong = allSongs?.find((s) => s.songId === song) || null;
     setSelectedSong(selectSong);
 
@@ -71,8 +62,19 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const collectAllSongs = (songs: Song[]) => {
     setAllSongs(songs);
+    // setSelectedSong(songs[0]);
     console.log(songs);
-    
+  };
+
+  const clearAllSongs = () => {
+    setAllSongs([]);
+  };
+
+  const collectAllSongsHome = (songs: Song[]) => {
+    setAllSongs((prevSongs) => {
+      return [...prevSongs, ...songs];
+    });
+    // setSelectedSong(songs[0]);
   };
 
   const playClick = () => {
@@ -88,27 +90,28 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-const nextSong = () => {
-  if (!allSongs) return;
+  const nextSong = () => {
+    if (!allSongs) return;
 
-  const currentIndex = allSongs.findIndex((s) => s.songId === selectedSong?.songId) || 0;
-  const nextIndex = (currentIndex + 1) % allSongs.length;
-  setSongToPlay(allSongs[nextIndex].songId);
-};
+    const currentIndex =
+      allSongs.findIndex((s) => s.songId === selectedSong?.songId) || 0;
+    const nextIndex = (currentIndex + 1) % allSongs.length;
+    setSongToPlay(allSongs[nextIndex].songId);
+  };
 
-const prevSong = () => {
-  if (!allSongs) return;
-  const currentIndex = allSongs.findIndex((s) => s.songId === selectedSong?.songId) || 0;
-  const prevIndex = (currentIndex - 1 + allSongs.length) % allSongs.length;
-  setSongToPlay(allSongs[prevIndex].songId);
-};
-
+  const prevSong = () => {
+    if (!allSongs) return;
+    const currentIndex =
+      allSongs.findIndex((s) => s.songId === selectedSong?.songId) || 0;
+    const prevIndex = (currentIndex - 1 + allSongs.length) % allSongs.length;
+    setSongToPlay(allSongs[prevIndex].songId);
+  };
 
   useEffect(() => {
-    const audioElement = audioRef?.current;
+    const audioElement = audioRef.current;
 
     if (audioElement) {
-      audioElement.ontimeupdate = () => {
+      const updateSeekbar = () => {
         setSeekbar(
           Math.floor((audioElement.currentTime / audioElement.duration) * 100)
         );
@@ -116,25 +119,27 @@ const prevSong = () => {
           second: Math.floor(audioElement.currentTime % 60),
           minute: Math.floor(audioElement.currentTime / 60),
         });
-
         setEndTime({
           second: Math.floor(audioElement.duration % 60),
           minute: Math.floor(audioElement.duration / 60),
         });
       };
 
-      audioElement.onended = () => {
-        setIsPlaying(false);
+      audioElement.addEventListener("timeupdate", updateSeekbar);
+
+      audioElement.addEventListener("ended", () => {
+        nextSong();
+      });
+
+      // Cleanup function to remove event listeners
+      return () => {
+        if (audioElement) {
+          audioElement.removeEventListener("timeupdate", updateSeekbar);
+          audioElement.removeEventListener("ended", nextSong);
+        }
       };
     }
-
-    // Cleanup function to remove the event listener
-    return () => {
-      if (audioElement) {
-        audioElement.ontimeupdate = null;
-      }
-    };
-  }, [audioRef]);
+  }, [allSongs, selectedSong, setSongToPlay]);
 
   return (
     <PlayerContext.Provider
@@ -152,7 +157,8 @@ const prevSong = () => {
         nextSong,
         prevSong,
         allSongs,
-       
+        collectAllSongsHome,
+        clearAllSongs,
       }}
     >
       {children}

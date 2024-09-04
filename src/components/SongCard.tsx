@@ -18,9 +18,7 @@ interface SongCardProps {
 const SongCard = ({ data }: SongCardProps) => {
   const playerContext = useContext(PlayerContext);
 
-  console.log(data);
   
-
   if (!playerContext) {
     throw new Error("SongCard must be used within a PlayerProvider");
   }

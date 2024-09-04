@@ -19,15 +19,18 @@ type SongList = {
 
 const Home = () => {
   const [newSong, setNewSong] = useState<Song[]>([]);
+  const [randomSong, setRandomSong] = useState<Song[]>([]);
   const [sliders, setSliders] = useState<number>(1);
-   const playerContext = useContext(PlayerContext);
-   if (!playerContext) {
-     throw new Error("Newsong must be used within a PlayerProvider");
-   }
-   const { collectAllSongs } = playerContext;
+  const playerContext = useContext(PlayerContext);
+  if (!playerContext) {
+    throw new Error("Newsong must be used within a PlayerProvider");
+  }
+  const { clearAllSongs, collectAllSongsHome } = playerContext;
 
   useEffect(() => {
+    clearAllSongs();
     getNewSong();
+    getRandomSong();
   }, []);
 
   const getNewSong = async () => {
@@ -38,11 +41,27 @@ const Home = () => {
           method: "GET",
         })
         .then((res) => {
-          setNewSong(res.data.data)
-          collectAllSongs(res.data.data);
+          setNewSong(res.data.data);
+          collectAllSongsHome(res.data.data);
         });
     } catch (err) {
       toast.error("Failed to get genre list" + err.message);
+    }
+  };
+
+  const getRandomSong = async () => {
+    try {
+      axios
+        .request({
+          url: import.meta.env.VITE_BASE_API + "/api/song/random",
+          method: "GET",
+        })
+        .then((res) => {
+          setRandomSong(res.data.data);
+          collectAllSongsHome(res.data.data);
+        });
+    } catch (err) {
+      toast.error("Failed to get random song" + err.message);
     }
   };
 
@@ -118,7 +137,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-[#000] p-3 h-[100%] w-[calc(100vw-250px)] text-white overflow-scroll no-scrollbar">
+    <div className="flex flex-col bg-[#000] p-3 h-[100%] md:w-[calc(100vw-250px)] w-full text-white overflow-scroll no-scrollbar">
       <div className="flex flex-col gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] w-[100%] h-[1000px] rounded-xl py-4 px-6">
         <h1 className="text-3xl font-bold">Welcome to Music !</h1>
         <p className="text-lg">
@@ -137,14 +156,14 @@ const Home = () => {
             className="mySwiper"
           >
             {newSong.map((data: Song) => (
-              <SwiperSlide>
-                <SongCard  data={data} />
+              <SwiperSlide key={data.songId}>
+                <SongCard data={data} />
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
 
-        {/* <p className="text-xl font-bold">Trending songs </p>
+        <p className="text-xl font-bold mt-5">Random songs</p>
         <div>
           <Swiper
             slidesPerView={sliders}
@@ -155,18 +174,13 @@ const Home = () => {
             modules={[Pagination]}
             className="mySwiper"
           >
-            {trendSongs.map((data) => (
-              <SwiperSlide>
-                <SongCard
-                  key={data.id}
-                  image={data.image}
-                  songName={data.songName}
-                  artists={data.artists}
-                />
+            {randomSong.map((data: Song) => (
+              <SwiperSlide key={data.songId}>
+                <SongCard data={data} />
               </SwiperSlide>
             ))}
           </Swiper>
-        </div> */}
+        </div>
 
         <p className="text-xl font-bold">Listing songs </p>
         <div>
