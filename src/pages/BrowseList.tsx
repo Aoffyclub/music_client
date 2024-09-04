@@ -91,7 +91,7 @@ const BrowseList = () => {
             </div>
           </div>
         </div>
-        {allSongs?.length > 0 ? (
+        {allSongs.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>

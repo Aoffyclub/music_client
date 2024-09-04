@@ -24,7 +24,7 @@ const Home = () => {
    if (!playerContext) {
      throw new Error("Newsong must be used within a PlayerProvider");
    }
-   const { allSongs, collectAllSongs } = playerContext;
+   const { collectAllSongs } = playerContext;
 
   useEffect(() => {
     getNewSong();

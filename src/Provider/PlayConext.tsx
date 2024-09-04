@@ -2,6 +2,7 @@ import React, { useState, createContext, useRef, useEffect } from "react";
 
 // Define the Song interface
 interface Song {
+  length: number;
   songId: number;
   image: string;
   songName: string;
@@ -20,8 +21,7 @@ interface Time {
 // Define the PlayContext interface
 interface PlayContextType {
   selectedSong: Song | null;
-  allSongs: Song ;
-  volume : number ;
+  allSongs: Song[] ;
   isPlaying: boolean;
   currentTime: Time;
   endTime: Time;
@@ -42,7 +42,7 @@ const PlayerContext = createContext<PlayContextType | null>(null);
 const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [allSongs, setAllSongs] = useState<Song[] | null>([]);
+  const [allSongs, setAllSongs] = useState<Song[]>([]);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [seekbar, setSeekbar] = useState<number>(0);
