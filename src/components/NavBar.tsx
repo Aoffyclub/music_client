@@ -1,5 +1,6 @@
 import { House, ListTree, Rss, Heart, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
+import Logo from "../images/logo_app.png"
 
 import {
   Sheet,
@@ -19,8 +20,9 @@ const NavBar = () => {
   return (
     <div>
       {/* mobile */}
-      {/* mobile */}
-      <div className="md:hidden flex items-center justify-end h-[60px] w-full shadow-sm bg-[#070707] text-white px-3">
+      <div className="md:hidden flex items-center justify-between h-[60px] w-full shadow-sm bg-[#070707] text-white px-3">
+        <img src={Logo} alt="" className="h-[40px] w-[55px]" />
+        
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger>
             <Menu />
@@ -85,7 +87,7 @@ const NavBar = () => {
       {/* Desktop */}
       <div className="md:flex hidden flex-col items-center w-[250px] h-[100%] shadow-sm bg-gradient-to-b from-[#070707] via-[#2c2b2b]  to-[#070707] text-white">
         <div className="w-[90%] flex flex-col gap-3 mt-5">
-          <h1 className="font-bold text-2xl">Music</h1>
+          <img src={Logo} alt="" className="h-[75px] w-[110px] ml-4" />
           <ul className="flex flex-col gap-4 mt-5 font-semibold">
             <li className="flex gap-2 hover:bg-slate-700 py-2 px-4 rounded-md">
               <House />
