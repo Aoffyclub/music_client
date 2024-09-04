@@ -69,7 +69,7 @@ const BrowseList = () => {
   };
   return (
     <div className="flex flex-col bg-[#000] p-3 h-[100%] md:w-[calc(100vw-250px)] w-full text-white overflow-scroll no-scrollbar">
-      <div className="flex flex-col relative gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] h-[1000px] w-[100%] rounded-xl overflow-hidden">
+      <div className="flex flex-col relative gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] h-auto w-[100%] rounded-xl overflow-hidden">
         <div
           className="w-[100%] sm:h-[270px] h-[180px] absolute top-0"
           style={{

@@ -30,7 +30,7 @@ const Browse = () => {
 
   return (
     <div className="flex flex-col bg-[#000] p-3 h-[100%] md:w-[calc(100vw-250px)] w-full text-white overflow-scroll no-scrollbar">
-      <div className="flex flex-col gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] w-[100%] rounded-xl py-4 px-6">
+      <div className="flex flex-col gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] w-[100%] rounded-xl md:py-4 py-2 md:px-6 px-3">
         <h1 className="text-3xl font-bold">Music browse!</h1>
         <p className="text-lg">
           Discover new songs, artists, and albums that you like.

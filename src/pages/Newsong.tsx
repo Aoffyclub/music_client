@@ -33,14 +33,14 @@ const Newsong = () => {
   };
   return (
     <div className="flex flex-col bg-[#000] p-3 h-[100%] md:w-[calc(100vw-250px)] w-full text-white overflow-scroll no-scrollbar">
-      <div className="flex flex-col gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] w-[100%] h-[1000px] rounded-xl py-4 px-6">
+      <div className="flex flex-col gap-2 bg-gradient-to-b from-[#070707] via-[#1d1c1c]  to-[#070707] w-[100%] h-auto rounded-xl md:py-4 py-2 md:px-6 px-3">
         <h1 className="text-3xl font-bold">Music new release!</h1>
         <p className="text-lg">
           Discover new songs, artists, and albums update here.
         </p>
 
         <p className="text-xl font-bold mt-5">New songs release </p>
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 ">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
           {allSongs?.map((data: Song) => (
             <SongCard key={data.songId} data={data} />
           ))}
