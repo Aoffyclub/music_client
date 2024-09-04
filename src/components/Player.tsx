@@ -58,8 +58,10 @@ const Player = () => {
           className="h-[50px] w-[50px] rounded-md bg-[#1B1A1A]"
         />
         <div>
-          <h2 className="font-semibold">{selectedSong?.songName}</h2>
-          <p className="text-[12px]">{selectedSong?.artist}</p>
+          <h2 className="font-semibold line-clamp-1">
+            {selectedSong?.songName}
+          </h2>
+          <p className="text-[12px] line-clamp-1">{selectedSong?.artist}</p>
         </div>
       </div>
       <div className="flex flex-col justify-center">
