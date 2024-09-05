@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 interface Login {
   username: string;
@@ -51,7 +52,7 @@ const Login = () => {
                     name="username"
                     value={login.username}
                     type="text"
-                    placeholder="Enter your name"
+                    placeholder="Enter your username"
                     className="mt-5"
                   />
                   <Input
