@@ -44,8 +44,10 @@ const Home = () => {
           setNewSong(res.data.data);
           collectAllSongsHome(res.data.data);
         });
-    } catch (err) {
-      toast.error("Failed to get genre list" + err.message);
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Failed to get song list: " + errorMessage);
     }
   };
 
@@ -60,8 +62,10 @@ const Home = () => {
           setRandomSong(res.data.data);
           collectAllSongsHome(res.data.data);
         });
-    } catch (err) {
-      toast.error("Failed to get random song" + err.message);
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred";
+      toast.error("Failed to get random song list: " + errorMessage);
     }
   };
 
