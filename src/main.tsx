@@ -9,6 +9,7 @@ import Browse from "./pages/Browse";
 import Newsong from "./pages/Newsong";
 import Favorite from "./pages/Favorite";
 import BrowseList from "./pages/BrowseList";
+import Login from "./pages/Login";
 import { PlayerProvider } from "./Provider/PlayConext";
 
 const router = createBrowserRouter(
@@ -39,6 +40,10 @@ const router = createBrowserRouter(
         },
       ],
     },
+    {
+      path: "/login",
+      element: <Login />,
+    }
   ],
   {
     basename: import.meta.env.VITE_BASE_URL,
