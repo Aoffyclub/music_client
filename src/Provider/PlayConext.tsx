@@ -1,6 +1,7 @@
 import React, { useState, createContext, useRef, useEffect } from "react";
 import { Song } from "@/interface/Interface";
 
+
 // Define the Song interface
 
 interface Time {
@@ -12,6 +13,7 @@ interface Time {
 interface PlayContextType {
   selectedSong: Song | null;
   allSongs: Song[];
+  token: string | null;
   isPlaying: boolean;
   currentTime: Time;
   endTime: Time;
@@ -25,6 +27,8 @@ interface PlayContextType {
   collectAllSongs: (songs: Song[]) => void;
   collectAllSongsHome: (songs: Song[]) => void;
   clearAllSongs: () => void;
+  loginFunc: (token: string) => void;
+  logOutSys: () => void;
 }
 
 // Create the PlayerContext with a default value of null
@@ -34,6 +38,9 @@ const PlayerContext = createContext<PlayContextType | null>(null);
 const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
   const [allSongs, setAllSongs] = useState<Song[]>([]);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -49,6 +56,17 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const loginFunc = (token: string) => {
+    localStorage.setItem("token", token);
+    setToken(token);
+  };
+
+  const logOutSys = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  
+  }
 
   // Function to set the current song
   const setSongToPlay = (song: number) => {
@@ -144,6 +162,9 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <PlayerContext.Provider
       value={{
+        token,
+        loginFunc,
+        logOutSys,
         selectedSong,
         isPlaying,
         audioRef,

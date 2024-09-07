@@ -1,6 +1,6 @@
-import { House, ListTree, Rss, Heart, Menu } from "lucide-react";
+import { House, ListTree, Rss, Heart, Menu, LogIn, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
-import Logo from "../images/logo_app.png"
+import Logo from "../images/logo_app.png";
 
 import {
   Sheet,
@@ -10,19 +10,34 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { toast } from "react-hot-toast";
+
+import { PlayerContext } from "@/Provider/PlayConext";
 
 const NavBar = () => {
   const [open, setOpen] = useState<boolean>(false);
   const handleLinkClick = () => {
     setOpen(false); //
   };
+
+  const playerContext = useContext(PlayerContext);
+  if (!playerContext) {
+    throw new Error("Newsong must be used within a PlayerProvider");
+  }
+  const { token, logOutSys } = playerContext;
+
+  const logOut = () => {
+    logOutSys();
+    handleLinkClick();
+    toast.success("Log out successfully!");
+  };
   return (
     <div>
       {/* mobile */}
       <div className="md:hidden flex items-center justify-between h-[60px] w-full shadow-sm bg-[#070707] text-white px-3">
         <img src={Logo} alt="" className="h-[40px] w-[55px]" />
-        
+
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger>
             <Menu />
@@ -76,6 +91,24 @@ const NavBar = () => {
                         Favorite
                       </Link>
                     </li>
+                    {token ? (
+                      <li className="flex gap-2 hover:bg-slate-700 py-2 px-4 rounded-md">
+                        <LogOut />
+                        <div
+                          className="hover:underline cursor-pointer"
+                          onClick={logOut}
+                        >
+                          Log Out
+                        </div>
+                      </li>
+                    ) : (
+                      <li className="flex gap-2 hover:bg-slate-700 py-2 px-4 rounded-md">
+                        <LogIn />
+                        <Link to="/login" className="hover:underline">
+                          Log in
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </SheetDescription>
@@ -113,6 +146,25 @@ const NavBar = () => {
                 Favorite
               </Link>
             </li>
+
+            {token ? (
+              <li className="flex gap-2 hover:bg-slate-700 py-2 px-4 rounded-md">
+                <LogOut />
+                <div
+                  className="hover:underline cursor-pointer"
+                  onClick={logOut}
+                >
+                  Log Out
+                </div>
+              </li>
+            ) : (
+              <li className="flex gap-2 hover:bg-slate-700 py-2 px-4 rounded-md">
+                <LogIn />
+                <Link to="/login" className="hover:underline">
+                  Log in
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
