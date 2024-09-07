@@ -64,9 +64,11 @@ const SongCard = ({ data }: SongCardProps) => {
           </TooltipProvider>
         )}
       </div>
-      <img src={data?.image} alt="" className="rounded-md h-[180px] w-[100%]" />
-      <p className="font-semibold">{data?.songName}</p>
-      <p className="text-sm hover:underline text-[#8E8E8E] line-clamp-1">{data?.artist}</p>
+      <img src={data?.image} alt="" className="rounded-md sm:h-[180px] w-[100%]" />
+      <p className="font-semibold line-clamp-1">{data?.songName}</p>
+      <p className="text-sm hover:underline text-[#8E8E8E] line-clamp-1">
+        {data?.artist}
+      </p>
     </div>
   );
 };

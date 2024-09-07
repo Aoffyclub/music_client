@@ -128,7 +128,7 @@ const Home = () => {
       } else if (width >= 640) {
         setSliders(2); // sm
       } else {
-        setSliders(1); // xs
+        setSliders(2); // xs
       }
     };
 

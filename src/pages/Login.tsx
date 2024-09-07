@@ -120,7 +120,7 @@ const Login = () => {
                 Login
               </TabsTrigger>
               <TabsTrigger value="Create Account" className="w-[50%]">
-                Create Account
+                Register
               </TabsTrigger>
             </TabsList>
             <TabsContent value="Login">
